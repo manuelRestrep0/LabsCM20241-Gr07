@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.widget.DatePicker
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +14,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,19 +31,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import co.edu.udea.compumovil.gr07_20241.lab1.navigation.Screens
-import co.edu.udea.compumovil.gr07_20241.lab1.ui.theme.Black
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun PersonalData(controller: NavController) {
+
+    val title = stringResource(R.string.screen_name)
+
     var name by rememberSaveable { mutableStateOf("") }
     var lastName by rememberSaveable { mutableStateOf("") }
 
@@ -57,129 +55,131 @@ fun PersonalData(controller: NavController) {
     val birthDate = rememberSaveable { mutableStateOf("$birthName*") }
 
     val scholarGrade = stringResource(R.string.grade)
-    val scholarSelected = rememberSaveable{mutableStateOf(scholarGrade)}
+    val scholarSelected = rememberSaveable { mutableStateOf(scholarGrade) }
 
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
-            PersonalPortraitOrientation(name, lastName, genderOptions, selectedOption, birthDate, scholarSelected)
-        } Configuration.ORIENTATION_LANDSCAPE -> {}
+            ConstraintLayout {
+                val (form) = createRefs()
+                Column(modifier = Modifier.constrainAs(form) {
+                    top.linkTo(parent.top)
+                }) {
+
+                    TopSection(title)
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 30.dp)
+                    ) {
+                        DataTextField(
+                            text = name,
+                            label = stringResource(R.string.names),
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardType = KeyboardType.Text,
+                            required = true,
+                            onTextChange = { name = it })
+                        Spacer(modifier = Modifier.height(15.dp))
+                        DataTextField(
+                            text = lastName,
+                            label = stringResource(R.string.last_names),
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardType = KeyboardType.Text,
+                            required = true,
+                            onTextChange = { lastName = it })
+                        Spacer(modifier = Modifier.height(15.dp))
+                        GenderButton(genderOptions = genderOptions, selectedOption = selectedOption)
+                        Spacer(modifier = Modifier.height(15.dp))
+                        BirthDatePicker(currentDate = birthDate)
+                        Spacer(modifier = Modifier.height(15.dp))
+                        ScholarGradeSpinner(
+                            selectedItem = scholarSelected,
+                            onItemSelected = { selected ->
+                                scholarSelected.value = selected
+                            })
+                    }
+
+                }
+
+            }
+        }
+
+        Configuration.ORIENTATION_LANDSCAPE -> {
+            ConstraintLayout {
+                val (form) = createRefs()
+                Column(modifier = Modifier.constrainAs(form) {
+                    top.linkTo(parent.top)
+                }) {
+
+                    TopSection(title)
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 30.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row (
+                            Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ){
+                            DataTextField(
+                                text = name,
+                                label = stringResource(R.string.names),
+                                keyboardType = KeyboardType.Text,
+                                required = true,
+                                onTextChange = { name = it })
+                            DataTextField(
+                                text = lastName,
+                                label = stringResource(R.string.last_names),
+                                keyboardType = KeyboardType.Text,
+                                required = true,
+                                onTextChange = { lastName = it })
+
+                        }
+                        Spacer(modifier = Modifier.height(15.dp))
+                        GenderButton(genderOptions = genderOptions, selectedOption = selectedOption)
+                        Spacer(modifier = Modifier.height(15.dp))
+                        BirthDatePicker(currentDate = birthDate)
+
+                    }
+
+                    Spacer(modifier = Modifier.height(15.dp))
+                    ScholarGradeSpinner(
+                        selectedItem = scholarSelected,
+                        onItemSelected = { selected ->
+                            scholarSelected.value = selected
+                        })
+
+                }
+
+            }
+        }
+
+
     }
 
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.End
-    ){
+    ) {
         DataButton(
             modifier = Modifier
                 .padding(20.dp)
                 .width(200.dp)
                 .height(50.dp),
             text = stringResource(R.string.next),
-            onClick = {controller.navigate(route = Screens.ContactData.route)})
+            onClick = { controller.navigate(route = Screens.ContactData.route) })
 
     }
 }
 
-//Formulario orientacion vertical
-@Composable
-private fun PersonalPortraitOrientation(name: String, lastName: String, genderOptions: List<String>,
-                                        selectedOption: MutableState<String>, birthDate: MutableState<String>,
-                                        scholarSelected: MutableState<String>) {
-    var name1 = name
-    var lastName1 = lastName
-
-    var genderOptions1 = genderOptions
-    val selectedOption1 = selectedOption
-
-    val birthDate1 = birthDate
-
-    val scholarSelected1 = scholarSelected
-
-    ConstraintLayout {
-        val (form) = createRefs()
-        Column(modifier = Modifier.constrainAs(form) {
-            top.linkTo(parent.top)
-        }) {
-
-            TopSection()
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 30.dp)
-            ) {
-                DataTextField(
-                    text = name1,
-                    label = stringResource(R.string.names),
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardType = KeyboardType.Text,
-                    required = true,
-                    onTextChange = { name1 = it })
-                Spacer(modifier = Modifier.height(15.dp))
-                DataTextField(
-                    text = lastName1,
-                    label = stringResource(R.string.last_names),
-                    modifier = Modifier.fillMaxWidth(),
-                    keyboardType = KeyboardType.Text,
-                    required = true,
-                    onTextChange = { lastName1 = it })
-                Spacer(modifier = Modifier.height(15.dp))
-                GenderButton(genderOptions = genderOptions1, selectedOption = selectedOption1)
-                Spacer(modifier = Modifier.height(15.dp))
-                BirthDatePicker(currentDate = birthDate1)
-                Spacer(modifier = Modifier.height(15.dp))
-                ScholarGradeSpinner(
-                    selectedItem = scholarSelected1,
-                    onItemSelected = {selected -> scholarSelected1.value = selected
-                    })
-            }
-
-        }
-
-    }
-}
-
-//Titulo del formulario
-@Composable
-private fun TopSection() {
-    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-
-    Box(
-        contentAlignment = Alignment.TopCenter,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-
-        Row(
-            modifier = Modifier.padding(top = 30.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                modifier = Modifier.size(42.dp),
-                painter = painterResource(R.drawable.logo),
-                contentDescription = stringResource(R.string.screen_name),
-                tint = uiColor
-            )
-            Spacer(modifier = Modifier.size(20.dp))
-            Column {
-                Text(
-                    text = stringResource(R.string.screen_name),
-                    color = uiColor
-                )
-            }
-        }
-        Row(
-            modifier = Modifier.padding(top = 80.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-        }
-    }
-}
 
 //Objeto composable para la eleccion de genero
 @Composable

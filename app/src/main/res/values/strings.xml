@@ -19,4 +19,5 @@
     <string name="city">Ciudad</string>
     <string name="change">Cambiar</string>
     <string name="next">Siguiente</string>
+    <string name="screen_name_contact">Informacion de contacto</string>
 </resources>
