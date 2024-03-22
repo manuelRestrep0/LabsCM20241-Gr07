@@ -17,7 +17,7 @@ import co.edu.udea.compumovil.gr07_20241.lab1.ui.theme.focusedTextFieldText
 import co.edu.udea.compumovil.gr07_20241.lab1.ui.theme.textFieldContainer
 import co.edu.udea.compumovil.gr07_20241.lab1.ui.theme.unfocusedTextFieldText
 
-
+//Objeto composable general para los campos de texto
 @Composable
 fun DataTextField(
     text: String,
