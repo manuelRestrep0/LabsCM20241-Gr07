@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Labs20241Gr07"
         tools:targetApi="31">
-        <!--  -->
+        <!--La actividad de screenOrientation con la propiedad de sensor nos ayuda a detectar la posición del dispositivo y hacer que la vista se vea en landscape o en Portrain -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
