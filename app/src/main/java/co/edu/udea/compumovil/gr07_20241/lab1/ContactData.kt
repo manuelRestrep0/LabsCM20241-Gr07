@@ -52,6 +52,10 @@ fun ContactData(controller: NavController) {
 
     var phone by rememberSaveable { mutableStateOf("") }
     var mail by rememberSaveable { mutableStateOf("") }
+    var pais by rememberSaveable { mutableStateOf("") }
+    var ciudad by rememberSaveable { mutableStateOf("") }
+    var direccion by rememberSaveable { mutableStateOf("") }
+
 
     val configuration = LocalConfiguration.current
 
@@ -87,6 +91,27 @@ fun ContactData(controller: NavController) {
                             keyboardType = KeyboardType.Email,
                             required = false,
                             onTextChange = { mail = it })
+                        Spacer(modifier = Modifier.height(15.dp))
+                        DataTextField(text = pais,
+                            label = stringResource(R.string.country),
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardType = KeyboardType.Text,
+                            required = true,
+                            onTextChange = { pais = it })
+                        Spacer(modifier = Modifier.height(15.dp))
+                        DataTextField(text = ciudad,
+                            label = stringResource(R.string.city),
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardType = KeyboardType.Text,
+                            required = false,
+                            onTextChange = { ciudad = it })
+                        Spacer(modifier = Modifier.height(15.dp))
+                        DataTextField(text = direccion,
+                            label = stringResource(R.string.address),
+                            modifier = Modifier.fillMaxWidth(),
+                            keyboardType = KeyboardType.Text,
+                            required = false,
+                            onTextChange = { direccion = it })
                         Spacer(modifier = Modifier.height(15.dp))
                     }
 
