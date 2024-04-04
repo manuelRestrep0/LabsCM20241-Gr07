@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Labs20241-Gr07</string>
+    <string name="screen_name">Personal Information</string>
+    <string name="names">First Names</string>
+    <string name="last_names">Last Names</string>
+    <string name="sex">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
+    <string name="prefer_not">Prefer not to say</string>
+    <string name="birth_day">Date of Birth</string>
+    <string name="grade">Grade</string>
+    <string name="elementary">Elementary School</string>
+    <string name="high_school">High School</string>
+    <string name="university">University</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="change">Change</string>
+    <string name="next">Next</string>
+    <string name="address">Address</string>
+    <string name="screen_name_contact">Contact Information</string>
+</resources>
